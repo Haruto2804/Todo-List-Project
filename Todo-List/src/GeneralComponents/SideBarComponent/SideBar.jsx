@@ -7,10 +7,12 @@ import { MdOutlineWorkHistory } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { GoProjectRoadmap } from "react-icons/go";
 
-export function SideBar() {
+export function SideBar({handleAddNewTask}) {
+
+
   return (
     <>
-      <aside className="fixed top-0 left-0 bottom-0 flex flex-col gap-5 w-sidebar z-1000
+      <aside className="fixed top-0 left-0 bottom-0 flex flex-col gap-5 w-sidebar
       border-r border-solid border-gray-200 p-5 bg-white
       ">
         <div className=" p-2 ">
@@ -23,7 +25,9 @@ export function SideBar() {
           </div>
         </div>
 
-        <button className="bg-blue-600 text-white font-bold rounded-lg cursor-pointer w-full
+        <button 
+        onClick = {handleAddNewTask}
+        className="bg-blue-600 text-white font-bold rounded-lg cursor-pointer w-full
         h-12 hover:bg-blue-700 transition-all hover:-translate-y-1
         ">
           Add new task
@@ -33,7 +37,7 @@ export function SideBar() {
           <div className="flex gap-4 p-3 items-center cursor-pointer hover:bg-blue-100 rounded-lg
           ">
             <HiOutlineInbox className="size-5 " />
-            <p>Inbox</p>
+            <p>All Tasks</p>
           </div>
           <div className="flex gap-4 p-3 items-center cursor-pointer hover:bg-blue-100 rounded-lg
           ">

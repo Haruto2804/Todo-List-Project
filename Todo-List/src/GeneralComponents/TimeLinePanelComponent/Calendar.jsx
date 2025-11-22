@@ -16,7 +16,6 @@ export function Calendar() {
     // Dữ liệu cần thiết
     const totalDays = lastDay.getDate(); // Sửa lỗi: Lấy tổng số ngày (28-31)
     const firstDayIndex = firstDay.getDay(); // Thứ của ngày 1 (0=CN, 1=T2,...)
-    console.log(firstDayIndex);
     // Tiêu đề Tháng & Năm
     const monthYearString = currentDate.toLocaleDateString('default', { month: 'long', year: 'numeric', });
 
