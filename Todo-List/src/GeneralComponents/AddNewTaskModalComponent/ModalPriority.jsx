@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function ModalPriority() {
+export function ModalPriority({setPriority}) {
   const [isSelectedPriority, setIsSelectedPriority] = useState('Medium');
   const priorities = [
     { color: 'bg-[#2ECC71]', value: 'Low' },
@@ -9,6 +9,7 @@ export function ModalPriority() {
   ];
   const handleSelectPriority = (value) => {
     setIsSelectedPriority(value);
+    setPriority(value);
   }
   return (
     <>

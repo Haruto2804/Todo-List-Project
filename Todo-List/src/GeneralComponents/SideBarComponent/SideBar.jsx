@@ -43,7 +43,7 @@ export function SideBar({ handleAddNewTask }) {
           <p>All Tasks</p>
         </NavLink>
 
-        <NavLink to="/" className={getNavLinkClass}>
+        <NavLink to="/tasks/today" className={getNavLinkClass}>
           <IoTodayOutline className="size-5" />
           <p>Today</p>
         </NavLink>

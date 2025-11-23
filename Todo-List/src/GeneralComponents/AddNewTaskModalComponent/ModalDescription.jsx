@@ -1,4 +1,4 @@
-export function ModalDescription() {
+export function ModalDescription({ setDescription }) {
   return (
     <>
       <div className="flex flex-col gap-3 focus:outline-blue-500 ">
@@ -7,10 +7,10 @@ export function ModalDescription() {
         </p>
         <textarea
           placeholder="Add more details about the task..."
-          // THÊM align-top VÀO ĐÂY
-          className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 
-           focus:ring-blue-500
-          "
+          className="w-full h-32 p-3 border border-gray-300 rounded-lg 
+             focus:outline-none focus:ring-2 focus:ring-blue-500
+             "
+          onChange={(e) => setDescription(e.target.value)}
         ></textarea>
       </div>
     </>

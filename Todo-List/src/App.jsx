@@ -5,8 +5,18 @@ import { NotFound } from './pages/NotFound'
 import { TasksView } from './pages/Tasks/TasksView'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+const getInitialTodos = () => {
+  const storedTodos = localStorage.getItem('todos');
+
+  if (storedTodos) {
+    // Nếu có dữ liệu, chuyển từ chuỗi JSON thành đối tượng JavaScript
+    return JSON.parse(storedTodos);
+  }
+  // Nếu không có, trả về mảng rỗng để khởi tạo
+  return [];
+};
 function App() {
-  const [todo, setTodos] = useState([]);
+  const [todo, setTodos] = useState(getInitialTodos);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const getTasks = async () => {
@@ -43,24 +53,44 @@ function App() {
       setIsLoading(false);
     }
   }
-  useEffect(() => {
+
+  const addTasks = async (newTaskData) => {
+    try {
+      console.log(newTaskData)
+      const response = await axios.post('https://dummyjson.com/todos/add', newTaskData);
+      const addNewTask = response.data;
+      const finalTask = {
+        ...addNewTask,
+        priority: newTaskData.priority,
+        name: newTaskData.name,
+        date: newTaskData.date
+      }
+      setTodos(prevTodos => [
+        finalTask,
+        ...prevTodos
+      ])
+      setError(null);
+    } catch (err) {
+      console.log("Loi khi them cong viec: ", err);
+      setError("Không thể thêm công việc. Vui lòng kiểm tra lại dữ liệu.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  useEffect(()=> {
     getTasks();
-  }, []);
-  if (isLoading) {
-    return (
-      <div className="p-8 text-lg">Đang tải dữ liệu công việc</div>
-    )
-  }
-  if (error) {
-    return (
-      <div className="p-8 text-red-800 text-lg">Lỗi:{error}</div>
-    )
-  }
-  console.log(todo);
+  },[]);
+  useEffect(() => {
+    // 1. Kiểm tra xem dữ liệu có tồn tại không trước khi lưu
+    if (todo.length > 0) {
+      // 2. Chuyển mảng đối tượng thành chuỗi JSON và lưu vào Local Storage
+      localStorage.setItem('todos', JSON.stringify(todo));
+    }
+  }, [todo]);
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage todo={todo} />}>
+        <Route path="/" element={<HomePage addTasks={addTasks} todo={todo} />}>
           <Route path="/tasks/all" element={<TasksView />} />
           <Route path="/tasks/today" element={<TasksView />} />
           <Route path="/tasks/upcoming" element={<TasksView />} />

@@ -3,8 +3,7 @@ import { TimeLinePanel } from '../../GeneralComponents/TimeLinePanelComponent/Ti
 import { AddNewTaskModal } from '../../GeneralComponents/AddNewTaskModalComponent/AddNewTaskModal'
 import { TasksView } from '../Tasks/TasksView'
 import { useState } from 'react'
-export function HomePage({todo}) {
-
+export function HomePage({addTasks, todo}) {
   let [isOpen, setIsOpen] = useState(false);
   function handleAddNewTask() {
     setIsOpen(isOpen => !isOpen);
@@ -21,7 +20,7 @@ export function HomePage({todo}) {
 
         <TasksView todo = {todo}></TasksView>
         <TimeLinePanel></TimeLinePanel>
-        <AddNewTaskModal isOpen={isOpen} handleAddNewTask={handleAddNewTask}></AddNewTaskModal>
+        <AddNewTaskModal addTasks = {addTasks} isOpen={isOpen} handleAddNewTask={handleAddNewTask}></AddNewTaskModal>
       </div>
     </>
   )
