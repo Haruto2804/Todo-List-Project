@@ -20,8 +20,10 @@ export const AddNewTaskModal = React.memo(function AddNewTaskModal({ addTasks, i
       priority: priority || 'Medium',
       date: date || defaultDateString,
       name: todoName,
-      isDeleted: false
+      isDeleted: false,
+      id: crypto.randomUUID()
     }
+    console.log('Add vua duoc them vao la: ');
     console.log(newTaskData)
     addTasks(newTaskData);
     handleAddNewTask();

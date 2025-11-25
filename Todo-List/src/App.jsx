@@ -44,6 +44,7 @@ const mergeTodoData = (currentTodos, newTaskData) => {
     // hợp nhất 2 dữ liệu lại với nhau
   ]
 }
+
 function App() {
   const [todo, setTodos] = useState(getInitialTodos);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,9 +76,8 @@ function App() {
           // Thêm trường priority mới
         };
       })
-      const newMergeData = mergeTodoData(tasksWithPriority, storedLocalStorageTodoData);
-      console.log('Data sau khi hop nhat: ', newMergeData);
-      setTodos(newMergeData);
+      const mergeData = mergeTodoData(tasksWithPriority, storedLocalStorageTodoData);
+      setTodos(mergeData);
       setError(null);
     }
     catch (err) {
@@ -91,16 +91,16 @@ function App() {
   }
   const addTasks = async (newTaskData) => {
     try {
-      console.log(newTaskData)
       const response = await axios.post('https://dummyjson.com/todos/add', newTaskData);
       const addNewTask = response.data;
       const finalTask = {
         ...addNewTask,
+        id: crypto.randomUUID(),
         priority: newTaskData.priority,
         name: newTaskData.name,
-        date: newTaskData.date
+        date: newTaskData.date,
+        isDeleted: false
       }
-
       setTodos(prevTodos => [
         finalTask,
         ...prevTodos
@@ -146,6 +146,7 @@ function App() {
     )
   }, [])
   useEffect(() => {
+    console.log('get tasks')
     getTasks();
   }, []);
 
@@ -154,6 +155,7 @@ function App() {
     // 1. Kiểm tra xem dữ liệu có tồn tại không trước khi lưu
     if (todo.length > 0) {
       // 2. Chuyển mảng đối tượng thành chuỗi JSON và lưu vào Local Storage
+      console.log('Da luu todos vao local storage');
       localStorage.setItem('todos', JSON.stringify(todo));
     }
   }, [todo]);

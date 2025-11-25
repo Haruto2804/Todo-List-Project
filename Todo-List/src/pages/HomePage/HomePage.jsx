@@ -58,6 +58,7 @@ export function HomePage({ deleteTask, handleToggleCompleted, addTasks, todo, se
     })
     if (isSelectAll) { //SELECT ALL
       newItems = newTodoFiltered.map((task) => {
+        console.log('task sau khi loc')
         console.log(task)
         return {
           ...task,
