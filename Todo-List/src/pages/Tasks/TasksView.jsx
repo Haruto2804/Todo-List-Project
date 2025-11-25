@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom'
 import { GoPencil } from "react-icons/go";
 import { FaRegTrashAlt } from "react-icons/fa";
-export function TasksView({ handleUpdateTask, handleDeleteConfirm, handleToggleCompleted, todo }) {
+export function TasksView({ isOpenCompletedConfirm, isSelectAll, handleSelectAllClick, handleUpdateTask, handleDeleteConfirm, handleToggleCompleted, todo }) {
   const location = useLocation();
   const currentView = location.pathname.split('/').pop();
   const tasksToDisplay = todo || [];
@@ -39,6 +39,9 @@ export function TasksView({ handleUpdateTask, handleDeleteConfirm, handleToggleC
         return taskTimestamp === todayTimestamp;
       });
       break;
+    case 'all':
+      filteredTasks = activeTasks.filter(task => !task.completed === true);
+      break;
     default:
       filteredTasks = activeTasks;
       break;
@@ -50,7 +53,7 @@ export function TasksView({ handleUpdateTask, handleDeleteConfirm, handleToggleC
     month: 'long',
     day: '2-digit'
   });
-
+  const tasksIdFiltered = filteredTasks.map((task)=>task.id) || [];
   return (
     <>
       <div className="ml-[250px] mr-79 flex-1 p-8 flex flex-col gap-5 overflow-y-auto">
@@ -109,18 +112,30 @@ export function TasksView({ handleUpdateTask, handleDeleteConfirm, handleToggleC
         </div>
         <div className="grid grid-cols-[auto,1fr,auto,auto,auto] border rounded-sm gap-5 border-gray-200">
           <div className="col-span-5 grid grid-cols-subgrid font-semibold h-10 items-center border-b border-gray-200 bg-slate-50 p-2">
-            <input type="checkbox" className="size-5" />
+            <input
+              onClick={(e) => {
+                handleSelectAllClick(e,tasksIdFiltered);
+            
+              }}
+              disabled={filteredTasks.length === 0 || filteredTasks.every((task)=> task.completed)}
+              checked={isSelectAll}
+              type="checkbox" className="size-5" />
             <p className="">Task Title</p>
             <p>Due Date</p>
-            <p>Priority</p>
+            <p>Priority</p> 
             <p>Action</p>
           </div>
           {filteredTasks.map((task) => {
             return (
               <div key={task.id} className=" cursor-pointer hover:bg-slate-100 transition-all col-span-5 grid grid-cols-subgrid items-center border-b border-gray-200 p-2">
                 <input
-                  onClick={handleToggleCompleted}
-                  disabled={task.completed} type="checkbox" className="size-5 cursor-pointer" />
+                  
+                  type="checkbox"
+                  checked={isOpenCompletedConfirm &&!task.completed}
+                  disabled={task.completed}
+                  onChange={() => handleToggleCompleted(task.id)}
+                  className="size-5 cursor-pointer"
+                />
                 <p className={task.completed === true ? "line-through opacity-30" : ""}>{task.todo}</p>
                 <p className={task.completed === true ? "line-through opacity-30" : ""}>{task.date}</p>
                 <p className={task.priority === "High" ? " text-red-800 bg-red-200 font-medium rounded-xl text-center p-2 " :

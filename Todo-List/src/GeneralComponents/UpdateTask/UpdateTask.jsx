@@ -6,7 +6,6 @@ import { ModalDescription } from "../AddNewTaskModalComponent/ModalDescription";
 import { useState } from "react";
 import React from 'react'
 export const UpdateTask = React.memo(function UpdateTask({ handleUpdateConfirm, isOpenUpdateConfirm, handleUpdateTask }) {
-  console.log('rerender update task')
   const [todoName, setTodoName] = useState("");
   const [description, setDescription] = useState("sdsd");
   const [priority, setPriority] = useState("");

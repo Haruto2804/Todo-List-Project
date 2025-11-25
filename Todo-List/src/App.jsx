@@ -3,7 +3,7 @@ import { HomePage } from './pages/HomePage/HomePage'
 import { Route, Routes } from 'react-router-dom'
 import { NotFound } from './pages/NotFound'
 import { TasksView } from './pages/Tasks/TasksView'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import axios from 'axios'
 const getInitialTodos = () => {
   const storedTodos = localStorage.getItem('todos');
@@ -100,7 +100,7 @@ function App() {
         name: newTaskData.name,
         date: newTaskData.date
       }
-    
+
       setTodos(prevTodos => [
         finalTask,
         ...prevTodos
@@ -138,17 +138,18 @@ function App() {
     }
 
   }
-  const handleToggleCompleted = (taskId) => {
-    console.log('Task vua bam co id: ', taskId);
+  const handleToggleCompleted = useCallback((taskId) => {
     setTodos(prevTask =>
       prevTask.map(task =>
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
-    );
-  };
+    )
+  }, [])
   useEffect(() => {
     getTasks();
   }, []);
+
+
   useEffect(() => {
     // 1. Kiểm tra xem dữ liệu có tồn tại không trước khi lưu
     if (todo.length > 0) {
@@ -159,7 +160,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage deleteTask={deleteTask} handleToggleCompleted={handleToggleCompleted} addTasks={addTasks} todo={todo} />}>
+        <Route path="/" element={<HomePage deleteTask={deleteTask} handleToggleCompleted={handleToggleCompleted} addTasks={addTasks} todo={todo} setTodos = {setTodos} />}>
           <Route path="/tasks/all" element={<TasksView />} />
           <Route path="/tasks/today" element={<TasksView />} />
           <Route path="/tasks/upcoming" element={<TasksView />} />

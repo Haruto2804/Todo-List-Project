@@ -1,11 +1,13 @@
-export function TodayProgress({total, completedTask, percent}) {
+import React from 'react'
+export const TodayProgress = React.memo(function TodayProgress({ total, completedTask, percent }) {
+  console.log('rerender today progerss')
   return (
     <>
       <div className="flex flex-col gap-3">
         <p className="font-bold text-lg">Today's Progress</p>
         <div className="flex gap-3 items-center">
           <div className="progress-percent text-xl font-bold">{percent}%</div>
-          <div className = "flex flex-col gap-1">
+          <div className="flex flex-col gap-1">
             <p className=" text-xl font-bold">
               {completedTask}/{total}
             </p>
@@ -18,4 +20,4 @@ export function TodayProgress({total, completedTask, percent}) {
       </div>
     </>
   )
-}
+})

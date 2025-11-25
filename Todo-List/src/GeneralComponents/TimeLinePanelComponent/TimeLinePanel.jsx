@@ -3,12 +3,10 @@ import { UpComingDeadlines } from "./UpComingDeadlines";
 import { TodayProgress } from "./TodayProgress";
 import React, { useMemo } from 'react';
 export const TimeLinePanel = React.memo((function TimeLinePanel({todo}) {
-  console.log('rerender timelinepanel');
   const {total,completedTask, percent} = useMemo (()=> {
     const total = todo.length;
     const completedTask = todo.filter((task)=>task.completed).length;
     const percent = total === 0 ? 0 : Math.round((completedTask / total) * 100);
-    console.log(completedTask)
     return {
       total,
       completedTask,
