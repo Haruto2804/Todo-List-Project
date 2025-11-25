@@ -52,7 +52,6 @@ export function HomePage({ deleteTask, handleToggleCompleted, addTasks, todo, se
   }
   const handleConfirmAction = () => {
     let newItems;
-    console.log('Danh sach task duoc loc:', taskIdFiltered);
     const taskIdSet = new Set(taskIdFiltered);
     const newTodoFiltered = todo.filter((task) => {
       return taskIdSet.has(task.id);
@@ -78,7 +77,6 @@ export function HomePage({ deleteTask, handleToggleCompleted, addTasks, todo, se
       })
     }
     setIsSelectAll (!isSelectAll);
-    console.log('Select or deselect todo', todo);
 
     const updatedTasksMap = new Map(newItems.map(task => [task.id, task]));
 
@@ -88,12 +86,14 @@ export function HomePage({ deleteTask, handleToggleCompleted, addTasks, todo, se
         // Kiểm tra xem task này có ID trong Map đã cập nhật không
         if (updatedTasksMap.has(task.id)) {
           // Nếu có, ghi đè bằng task mới đã cập nhật
-          return updatedTasksMap.get(task.id);
+          return {
+            ...updatedTasksMap.get(task.id),
+            priority: "Completed"
+          }
         }
         // Nếu không, giữ nguyên task cũ
         return task;
       });
-
       // Xóa trạng thái tạm thời (rất quan trọng)
       setTaskIdFiltered([]);
       return finalTodos; // Trả về mảng todo đã được hợp nhất
@@ -101,7 +101,6 @@ export function HomePage({ deleteTask, handleToggleCompleted, addTasks, todo, se
 
     handleCompletedConfirm();
   }
-  console.log('select all(1)',isSelectAll)
   return (
     <>
       <div className="relative flex flex-col">

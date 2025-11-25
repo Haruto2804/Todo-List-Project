@@ -160,7 +160,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage deleteTask={deleteTask} handleToggleCompleted={handleToggleCompleted} addTasks={addTasks} todo={todo} setTodos = {setTodos} />}>
+        <Route path="/" element={<HomePage deleteTask={deleteTask} handleToggleCompleted={handleToggleCompleted} addTasks={addTasks} todo={todo} setTodos={setTodos} />}>
           <Route path="/tasks/all" element={<TasksView />} />
           <Route path="/tasks/today" element={<TasksView />} />
           <Route path="/tasks/upcoming" element={<TasksView />} />

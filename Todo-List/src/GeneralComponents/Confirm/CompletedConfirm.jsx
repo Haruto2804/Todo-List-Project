@@ -29,7 +29,6 @@ export function CompletedConfirm({ setIsSelectAll, handleConfirmAction, handleCo
           <button
             onClick={() => {
               handleCompletedConfirm();
-              console.log('select all: false')
               setIsSelectAll(false);
             }}
             className="font-bold flex-1 px-10 w-full py-3 rounded-lg bg-slate-700 cursor-pointer hover:bg-white/30 transition-all">
