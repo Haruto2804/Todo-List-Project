@@ -146,8 +146,7 @@ function App() {
     )
   }, [])
   useEffect(() => {
-    console.log('get tasks')
-    getTasks();
+
   }, []);
 
 
@@ -158,12 +157,11 @@ function App() {
       return !newSetIdTaskCurrentView.has(task.id);
     })
     setTodos(newTodoAfterDelete);
+    localStorage.setItem('todos',[]); // dọn dữ liệu trong local Storage
   }
   useEffect(() => {
     // 1. Kiểm tra xem dữ liệu có tồn tại không trước khi lưu
     if (todo.length > 0) {
-      // 2. Chuyển mảng đối tượng thành chuỗi JSON và lưu vào Local Storage
-      console.log('Da luu todos vao local storage');
       localStorage.setItem('todos', JSON.stringify(todo));
     }
   }, [todo]);

@@ -7,7 +7,7 @@ import { DeleteConfirm } from '../../GeneralComponents/Confirm/DeleteConfirm'
 import { UpdateConfirm } from '../../GeneralComponents/Confirm/UpdateConfirm'
 import { CompletedConfirm } from '../../GeneralComponents/Confirm/CompletedConfirm'
 import { UpdateTask } from '../../GeneralComponents/UpdateTask/UpdateTask'
-export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCompleted, addTasks, todo, setTodos }) {
+export function HomePage({ handleDeleteAllCurrentView, deleteTask, handleToggleCompleted, addTasks, todo, setTodos }) {
   const [isOpenAddNewTask, setIsOpenAddNewTask] = useState(false);
   const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
   const [isOpenUpdateTask, setIsOpenUpdateTask] = useState(false);
@@ -16,6 +16,9 @@ export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCo
   const [taskIdToDelete, setTaskIdToDelete] = useState(null);
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [taskIdFiltered, setTaskIdFiltered] = useState([]);
+  const [upcomingTasks, setUpcomingTasks] = useState([]);
+  console.log('upcoming task',upcomingTasks);
+
   const memorizedHandleAddNewTask = useCallback(() => {
     setIsOpenAddNewTask(isOpen => !isOpen);
   }, [])
@@ -65,7 +68,7 @@ export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCo
           isSelected: true,
           completed: true
         }
-    
+
       })
     } else { // DESELECT
       console.log('Dang o chuc nang tat ca khong duoc chon')
@@ -77,7 +80,7 @@ export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCo
         }
       })
     }
-    setIsSelectAll (!isSelectAll);
+    setIsSelectAll(!isSelectAll);
 
     const updatedTasksMap = new Map(newItems.map(task => [task.id, task]));
 
@@ -102,8 +105,9 @@ export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCo
 
     handleCompletedConfirm();
   }
+
   return (
-    <>
+    <div className="font-inter">
       <div className="relative flex flex-col">
         <div className={`overlay fixed top-0 right-0 z-20 left-0 bottom-0 bg-black/50
           ${isOpenAddNewTask || isOpenDeleteConfirm || isOpenUpdateTask || isOpenUpdateConfirm || isOpenCompletedConfirm
@@ -114,17 +118,17 @@ export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCo
             if (isOpenAddNewTask) memorizedHandleAddNewTask();
             if (isOpenDeleteConfirm) handleDeleteConfirm();
             if (isOpenUpdateTask) handleUpdateTask();
-            if (isOpenCompletedConfirm)  {
+            if (isOpenCompletedConfirm) {
               handleCompletedConfirm();
               setIsSelectAll(false);
             }
             if (isOpenUpdateConfirm) handleUpdateConfirm();
           }}></div>
         <SideBar handleAddNewTask={memorizedHandleAddNewTask}></SideBar>
-        
-        <TasksView handleDeleteAllCurrentView = {handleDeleteAllCurrentView} isOpenCompletedConfirm={isOpenCompletedConfirm} isSelectAll={isSelectAll} handleCompletedConfirm={handleCompletedConfirm} handleSelectAllClick={handleSelectAllClick} handleUpdateTask={handleUpdateTask} handleDeleteConfirm={handleDeleteConfirm} handleToggleCompleted={handleToggleCompleted} todo={todo}></TasksView>
 
-        <TimeLinePanel todo={todo}></TimeLinePanel>
+        <TasksView setUpcomingTasks = {setUpcomingTasks} handleDeleteAllCurrentView={handleDeleteAllCurrentView} isOpenCompletedConfirm={isOpenCompletedConfirm} isSelectAll={isSelectAll} handleCompletedConfirm={handleCompletedConfirm} handleSelectAllClick={handleSelectAllClick} handleUpdateTask={handleUpdateTask} handleDeleteConfirm={handleDeleteConfirm} handleToggleCompleted={handleToggleCompleted} todo={todo}></TasksView>
+
+        <TimeLinePanel  upcomingTasks = {upcomingTasks} todo={todo}></TimeLinePanel>
 
         <AddNewTaskModal addTasks={addTasks} isOpen={isOpenAddNewTask} handleAddNewTask={memorizedHandleAddNewTask}></AddNewTaskModal>
 
@@ -133,8 +137,8 @@ export function HomePage({ handleDeleteAllCurrentView,deleteTask, handleToggleCo
         <UpdateConfirm handleUpdateConfirm={handleUpdateConfirm} isOpenUpdateConfirm={isOpenUpdateConfirm} handleUpdateTask={handleUpdateTask} ></UpdateConfirm>
 
         <UpdateTask handleUpdateConfirm={handleUpdateConfirm} isOpenUpdateConfirm={isOpenUpdateTask} handleUpdateTask={handleUpdateTask}></UpdateTask>
-        <CompletedConfirm setIsSelectAll = {setIsSelectAll} handleConfirmAction={handleConfirmAction} handleCompletedConfirm={handleCompletedConfirm} isOpenCompletedConfirm={isOpenCompletedConfirm}></CompletedConfirm>
+        <CompletedConfirm setIsSelectAll={setIsSelectAll} handleConfirmAction={handleConfirmAction} handleCompletedConfirm={handleCompletedConfirm} isOpenCompletedConfirm={isOpenCompletedConfirm}></CompletedConfirm>
       </div>
-    </>
+    </div>
   )
 }
