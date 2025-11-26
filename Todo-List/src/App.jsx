@@ -1,5 +1,5 @@
 import './App.css'
-import { HomePage } from './pages/HomePage/HomePage'
+import { HomePage } from './pages/HomePagePage/HomePage.jsx'
 import { Route, Routes } from 'react-router-dom'
 import { NotFound } from './pages/NotFound'
 import { TasksView } from './pages/Tasks/TasksView'
@@ -47,8 +47,11 @@ const mergeTodoData = (currentTodos, newTaskData) => {
 
 function App() {
   const [todo, setTodos] = useState(getInitialTodos);
+  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const getTasks = async () => {
     const storedLocalStorageTodoData = getInitialTodos();
     try {
@@ -114,29 +117,35 @@ function App() {
     }
   }
   const deleteTask = async (taskId) => {
-    try {
-      const response = await axios.delete(`https://dummyjson.com/todos/${taskId}`);
-      console.log(`Task sau khi xóa ${taskId} đã được xóa!`);
-      const deletedTaskData = response.data;
-      setTodos(prevTodos => {
-        return prevTodos.map(task => {
-          if (task.id === taskId) {
-            return {
-              ...task,
-              ...deletedTaskData
-            }
-          }
-          return task;
-        })
-      })
-      setError(null);
-    } catch (err) {
-      console.error('Lỗi khi xóa task:', err);
-      setError("Không thể xóa task. Vui lòng kiểm tra kết nối.");
-    } finally {
-      setIsLoading(false);
-    }
+    //Xóa bằng cách gọi API, thêm isDeleted từ API trả về đưa vào task, nhưng todo thật sự chưa có xóa khỏi danh sach
+    // try {
+    //   const response = await axios.delete(`https://dummyjson.com/todos/1`);
 
+    //   const deletedTaskData = response.data;
+    //   console.log(`Task sau khi xóa ${taskId} đã được xóa!`);
+    //   setTodos(prevTodos => {
+    //     return prevTodos.map(task => {
+    //       if (task.id === taskId) {
+    //         return {
+    //           ...task,
+    //           ...deletedTaskData
+    //         }
+    //       }
+    //     })
+    //   })
+    //   setError(null);
+    // } catch (err) {
+    //   console.error('Lỗi khi xóa task:', err);
+    //   setError("Không thể xóa task. Vui lòng kiểm tra kết nối.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    //Xóa bằng cách dùng code của bản thân
+    console.log('task can xoa',taskId)
+    const newDataTodo = todo.filter((task) => task.id != taskId); // trả về danh sách todo ko có taskID cần xóa
+    setTodos(newDataTodo);
+    console.log('task vua xoa',newDataTodo);
+    setError(null);
   }
   const handleToggleCompleted = useCallback((taskId) => {
     setTodos(prevTask =>
@@ -157,7 +166,7 @@ function App() {
       return !newSetIdTaskCurrentView.has(task.id);
     })
     setTodos(newTodoAfterDelete);
-    localStorage.setItem('todos',[]); // dọn dữ liệu trong local Storage
+    localStorage.setItem('todos', []); // dọn dữ liệu trong local Storage
   }
   useEffect(() => {
     // 1. Kiểm tra xem dữ liệu có tồn tại không trước khi lưu
