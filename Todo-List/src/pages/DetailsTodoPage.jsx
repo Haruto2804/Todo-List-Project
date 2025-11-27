@@ -79,7 +79,7 @@ export function DetailsTodoPage({ updateTask, deleteTask, todo }) {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">Ngày hết hạn</label>
-                  <p className="mt-1">{foundTask.date}</p>+
+                  <p className="mt-1">{foundTask.date}</p>
                 </div>
                 <div >
                   <label className="text-sm font-medium text-gray-500">Priority</label>

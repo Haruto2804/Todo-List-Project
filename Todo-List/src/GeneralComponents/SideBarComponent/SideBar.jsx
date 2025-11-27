@@ -5,9 +5,10 @@ import { MdOutlineUpcoming, MdOutlineWorkHistory } from "react-icons/md";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { GoProjectRoadmap } from "react-icons/go";
 import { NavLink, Link } from 'react-router-dom';
+import { IoHomeOutline } from "react-icons/io5";
+
 import React from 'react'
 export const SideBar = React.memo(function SideBar({ handleAddNewTask }) {
-  console.log('rerender sidebar')
   const getNavLinkClass = ({ isActive }) =>
     `flex gap-4 p-3 items-center cursor-pointer rounded-lg transition-colors
         ${isActive
@@ -39,6 +40,10 @@ export const SideBar = React.memo(function SideBar({ handleAddNewTask }) {
 
       {/* --- TASKS SECTION --- */}
       <div className="feature-section flex flex-col gap-1 ">
+        <NavLink to="/" className={getNavLinkClass}>
+          <IoHomeOutline className="size-5" />
+          <p>Home</p>
+        </NavLink>
         <NavLink to="/tasks/all" className={getNavLinkClass}>
           <HiOutlineInbox className="size-5" />
           <p>All Tasks</p>

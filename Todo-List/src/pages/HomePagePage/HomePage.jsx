@@ -21,6 +21,8 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
   const [error, setError] = useState("");
   const [isErrorInputOpen, setIsErrorInputOpen] = useState(false);
   const [taskIdToDelete, setTaskIdToDelete] = useState(null);
+  const [selectedTasks, setSelectedTasks] = useState(new Set());
+
   const handleDeleteConfirm = useCallback((taskId) => {
     if (taskId) {
       setTaskIdToDelete(taskId);
@@ -29,8 +31,6 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
     }
     setIsOpenDeleteConfirm(isOpenDeleteConfirm => !isOpenDeleteConfirm);
   }, [])
-  console.log('==============================================render homepage');
-  console.log(todo);
   const memorizedHandleAddNewTask = useCallback(() => {
     setIsOpenAddNewTask(isOpen => !isOpen);
   }, [])
@@ -50,12 +50,17 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
   const handleSelectAllClick = useCallback((e, taskIdToSelect) => {
     const isChecked = e.target.checked;
     if (isChecked) {
+      console.log('set select all')
       setIsSelectAll(true); // SELECT ALL
+      setSelectedTasks(new Set(taskIdToSelect));
+
     } else {
+      console.log('set unselect all')
       setIsSelectAll(false); //DESELECT ALL
+      setSelectedTasks(new Set());
     }
     setTaskIdFiltered(taskIdToSelect);
-    handleCompletedConfirm(true);
+    handleCompletedConfirm();
   }, [handleCompletedConfirm])
   const handleConfirmAction = () => {
     let newItems;
@@ -70,7 +75,7 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
         return {
           ...task,
           isSelected: true,
-          completed: true
+          completed: true,
         }
 
       })
@@ -80,7 +85,7 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
         return {
           ...task,
           isSelected: false,
-          completed: false
+          completed: false,
         }
       })
     }
@@ -104,12 +109,24 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
       });
       // Xóa trạng thái tạm thời (rất quan trọng)
       setTaskIdFiltered([]);
+      setSelectedTasks(new Set());
       return finalTodos; // Trả về mảng todo đã được hợp nhất
     });
 
     handleCompletedConfirm();
   }
-
+  const handleToggleSingleTask = useCallback((taskId) => {
+    console.log(taskId);
+    setSelectedTasks(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(taskId)) {
+        newSet.delete(taskId);
+      } else {
+        newSet.add(taskId)
+      }
+      return newSet;
+    })
+  }, [selectedTasks])
 
   return (
     <div className="font-inter">
@@ -132,6 +149,8 @@ export function HomePage({ updateTask, handleDeleteAllCurrentView, deleteTask, h
         <SideBar handleAddNewTask={memorizedHandleAddNewTask}></SideBar>
 
         <TasksView
+          selectedTasks={selectedTasks}
+          handleToggleSingleTask={handleToggleSingleTask}
           setTaskToUpdate={setTaskToUpdate}
           setUpcomingTasks={setUpcomingTasks}
           handleDeleteAllCurrentView={handleDeleteAllCurrentView}

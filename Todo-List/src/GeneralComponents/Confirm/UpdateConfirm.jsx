@@ -1,10 +1,6 @@
 import React from 'react'
 
 export const UpdateConfirm = React.memo(function UpdateConfirm({ updateTask, taskToUpdate, handleUpdateConfirm, isOpenUpdateConfirm, handleUpdateTask }) {
-  console.log('rerender update confirm');
-  console.log('task de cap nhat,', taskToUpdate);
-  // KIỂM TRA ĐÂY:
-
   return (
     <>
       <div className={`

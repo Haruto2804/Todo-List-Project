@@ -16,7 +16,6 @@ export const UpdateTask = React.memo(function UpdateTask({
   isOpenUpdateTask, 
   handleUpdateTask 
 }) {
-  console.log('rerender update task')
   const [todoName, setTodoName] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");

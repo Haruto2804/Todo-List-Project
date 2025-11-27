@@ -1,6 +1,5 @@
 import React from 'react'
 export const TodayProgress = React.memo(function TodayProgress({ total, completedTask, percent }) {
-  console.log('rerender today progerss')
   return (
     <>
       <div className="flex flex-col gap-3 select-none">

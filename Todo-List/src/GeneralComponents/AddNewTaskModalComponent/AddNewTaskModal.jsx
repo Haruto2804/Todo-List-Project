@@ -6,8 +6,6 @@ import { useCallback, useState } from 'react'
 import React from 'react'
 import { getTaskDateStamp,getTodayStamp } from '../../utils/DateUtils'
 export const AddNewTaskModal = React.memo(function AddNewTaskModal({ setIsErrorInputOpen, setError, addTasks, isOpen, handleAddNewTask }) {
-  console.log('rerender add new task modal')
-
   const [todoName, setTodoName] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");

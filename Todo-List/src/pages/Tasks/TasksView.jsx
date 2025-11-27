@@ -13,8 +13,7 @@ const priorityWeight = {
   'None': 0,
 };
 
-export const TasksView = React.memo(function TasksView({ handleDeleteAllCurrentView, setTaskToUpdate, setUpcomingTasks, isSelectAll, handleSelectAllClick, handleUpdateTask, handleDeleteConfirm, handleToggleCompleted, todo }) {
-  console.log('render task view')
+export const TasksView = React.memo(function TasksView({ selectedTasks, handleToggleSingleTask, handleDeleteAllCurrentView, setTaskToUpdate, setUpcomingTasks, isSelectAll, handleSelectAllClick, handleUpdateTask, handleDeleteConfirm, handleToggleCompleted, todo }) {
 
   // ✅ CẬP NHẬT: Đặt giá trị mặc định ban đầu là 'date_none'
   const [sortOrder, setSortOrder] = useState('date_none');
@@ -102,6 +101,7 @@ export const TasksView = React.memo(function TasksView({ handleDeleteAllCurrentV
     return dateB - dateA;
   }, [getTaskDateStart])
 
+  console.log(currentView)
   // LOGIC sắp xếp priority
   const handleSortPriorityAscending = useCallback((a, b) => {
     const weightA = priorityWeight[a.priority] || 0;
@@ -142,10 +142,17 @@ export const TasksView = React.memo(function TasksView({ handleDeleteAllCurrentV
       <div className="select-auto ml-[250px] mr-79 flex-1 p-8 flex flex-col gap-5 overflow-y-auto">
         <div className="">
           <div className="flex flex-col gap-5">
-            <p className="text-3xl font-bold">{currentView === "completed" ?
-              "Completed's Tasks" : currentView === "upcoming" ? "Upcoming's Tasks"
-                : currentView === "today" ? "Today's Tasks" : "All Tasks"
-            }</p>
+            <p className="text-3xl font-bold">{currentView === "completed"
+              ? "Completed's Tasks"
+              : currentView === "upcoming"
+                ? "Upcoming's Tasks"
+                : currentView === "today"
+                  ? "Today's Tasks"
+                  : currentView === "Todo-List-Project" 
+                    ? "Home"
+                    : "All Tasks"
+            }
+            </p>
             <p className="text-gray-500 text-lg">{dateString}</p>
           </div>
         </div>
@@ -222,7 +229,8 @@ export const TasksView = React.memo(function TasksView({ handleDeleteAllCurrentV
         <div className="grid grid-cols-[auto,1fr,auto,auto,auto] border rounded-sm gap-5 border-gray-200">
           <div className="col-span-5 col-row-1 grid grid-cols-subgrid font-semibold h-10 items-center border-b border-gray-200 bg-slate-50 p-2">
             <input
-              onClick={(e) => {
+              onChange={(e) => {
+                console.log('select check:', e.target.checked)
                 handleSelectAllClick(e, tasksIdFiltered);
               }}
               disabled={sortedTasks.length === 0 || sortedTasks.every((task) => task.completed)}
@@ -239,9 +247,9 @@ export const TasksView = React.memo(function TasksView({ handleDeleteAllCurrentV
               <div key={task.id} className=" cursor-pointer hover:bg-slate-100 transition-all col-span-5 grid grid-cols-subgrid items-center border-b border-gray-200 p-2">
                 <input
                   type="checkbox"
-                  checked={task.completed}
+                  checked={selectedTasks.has(task.id)}
                   disabled={task.completed}
-                  onChange={() => handleToggleCompleted(task.id)}
+                  onChange={() => handleToggleSingleTask(task.id)}
                   className="size-5 cursor-pointer"
                 />
                 <p className={`${task.completed === true ? "line-through opacity-30" : "truncate"} `}>{task.name}</p>
@@ -268,18 +276,20 @@ export const TasksView = React.memo(function TasksView({ handleDeleteAllCurrentV
                     className="p-2 cursor-pointer hover:bg-black/10 transition-all rounded-full">
                     <FaRegTrashAlt />
                   </button>
-                    <Link to = {`/tasks/details/${task.id}`}
+                  <Link to={`/tasks/details/${task.id}`}
                     disabled={task.completed}
                     onClick={() => handleDeleteConfirm(task.id)}
                     className="p-2 cursor-pointer hover:bg-black/10 transition-all rounded-full">
                     <GrExpand />
                   </Link>
-                  
+
                 </div>
               </div>
             )
           })}
+
         </div>
+
       </div >
     </>
   )
